@@ -20,7 +20,7 @@ public:
 
 private:
     String _baseUrl;
-    HttpResponse makeRequest(const String& fullUrl, std::function<int(HTTPClient&)> sendRequest);
+    HttpResponse makeRequest(const String& path, std::function<int(HTTPClient&)> sendRequest);
 };
 
 #endif
