@@ -32,3 +32,16 @@ HttpResponse TinyFetch::post(const String& path, const String& body, const Strin
         return http.POST(body);
     });
 }
+
+HttpResponse TinyFetch::put(const String& path, const String& body, const String& contentType) {
+    return makeRequest(_baseUrl + path, [&](HTTPClient& http) {
+        http.addHeader("Content-Type", contentType);
+        return http.PUT(body);
+    });
+}
+
+HttpResponse TinyFetch::del(const String& path) {
+    return makeRequest(_baseUrl + path, [](HTTPClient& http) {
+        return http.sendRequest("DELETE");
+    });
+}
