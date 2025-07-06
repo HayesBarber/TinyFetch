@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <HTTPClient.h>
+#include <functional>
 
 struct HttpResponse {
     int statusCode = -1;
@@ -17,6 +18,7 @@ public:
 
 private:
     String _baseUrl;
+    HttpResponse makeRequest(const String& fullUrl, std::function<int(HTTPClient&)> sendRequest);
 };
 
 #endif
