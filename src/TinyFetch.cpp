@@ -21,3 +21,24 @@ HttpResponse TinyFetch::get(const String& path) {
     http.end();
     return response;
 }
+
+HttpResponse TinyFetch::post(const String& path, const String& body, const String& contentType) {
+    HTTPClient http;
+    HttpResponse response;
+
+    String fullUrl = _baseUrl + path;
+    http.begin(fullUrl);
+    http.addHeader("Content-Type", contentType);
+
+    int status = http.POST(body);
+    response.statusCode = status;
+
+    if (status > 0) {
+        response.payload = http.getString();
+    } else {
+        response.payload = http.errorToString(status);
+    }
+
+    http.end();
+    return response;
+}

@@ -13,6 +13,7 @@ class TinyFetch {
 public:
     TinyFetch(const String& url);
     HttpResponse get(const String& path);
+    HttpResponse post(const String& path, const String& body, const String& contentType = "application/json");
 
 private:
     String _baseUrl;
