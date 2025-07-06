@@ -1,6 +1,6 @@
 # TinyFetch
 
-TinyFetch is a lightweight HTTP client wrapper using the Arduino `HTTPClient` library. It simplifies making HTTP requests (GET, POST, PUT, DELETE) by providing a clean and consistent interface for interacting with RESTful APIs.
+TinyFetch is a lightweight HTTP client wrapper using the Arduino ESP32 `HTTPClient` library. It simplifies making HTTP requests (GET, POST, PUT, DELETE) by providing a clean and consistent interface for interacting with RESTful APIs.
 
 ## Features
 
