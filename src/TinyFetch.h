@@ -20,6 +20,8 @@ struct HttpResponse {
  */
 class TinyFetch {
 public:
+    TinyFetch();
+
     /**
      * @brief Constructs a TinyFetch client with the specified base URL.
      * @param url The base URL to which all requests will be made.
