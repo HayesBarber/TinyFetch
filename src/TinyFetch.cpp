@@ -1,6 +1,7 @@
 #include "TinyFetch.h"
+#include <MicroStorage.h>
 
-TinyFetch::TinyFetch(const String& url) : _baseUrl(url) {}
+TinyFetch::TinyFetch(const String& baseUrl) : _baseUrl(baseUrl) {}
 
 HttpResponse TinyFetch::makeRequest(const String& path, std::function<int(HTTPClient&)> sendRequest) {
     HTTPClient http;
@@ -19,6 +20,20 @@ HttpResponse TinyFetch::makeRequest(const String& path, std::function<int(HTTPCl
 
     http.end();
     return response;
+}
+
+void TinyFetch::persistBaseUrl() {
+    MicroStorage::set("TinyFetch",
+        StringEntry("baseUrl", _baseUrl)
+    );   
+}
+
+String TinyFetch::getBaseUrl() {
+    auto [value] = MicroStorage::get("TinyFetch",
+        StringEntry("baseUrl", "")
+    );
+
+    return value;
 }
 
 HttpResponse TinyFetch::get(const String& path) {

@@ -24,7 +24,7 @@ public:
      * @brief Constructs a TinyFetch client with the specified base URL.
      * @param url The base URL to which all requests will be made.
      */
-    TinyFetch(const String& url);
+    TinyFetch(const String& baseUrl);
 
     /**
      * @brief Performs an HTTP GET request.
@@ -61,6 +61,8 @@ public:
 private:
     String _baseUrl;
     HttpResponse makeRequest(const String& path, std::function<int(HTTPClient&)> sendRequest);
+    void persistBaseUrl();
+    String getBaseUrl();
 };
 
 #endif
