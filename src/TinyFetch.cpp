@@ -15,6 +15,10 @@ void TinyFetch::setBaseUrl(const String &baseUrl) {
 HttpResponse TinyFetch::makeRequest(const String& path, std::function<int(HTTPClient&)> sendRequest) {
     if (!_baseUrl || _baseUrl.length() <= 0) {
         Serial.println("[TinyFetch] No base url set");
+        HttpResponse errorResponse;
+        errorResponse.statusCode = -1;
+        errorResponse.payload = "No base URL set.";
+        return errorResponse;
     }
 
     HTTPClient http;
