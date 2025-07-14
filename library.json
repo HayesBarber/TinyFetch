@@ -8,5 +8,11 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/HayesBarber/TinyFetch.git"
-  }
+  },
+  "dependencies": [
+    {
+      "name": "MicroStorage",
+      "version": "https://github.com/HayesBarber/MicroStorage.git#main"
+    }
+  ]
 }

@@ -1,8 +1,26 @@
 #include "TinyFetch.h"
+#include <MicroStorage.h>
 
-TinyFetch::TinyFetch(const String& url) : _baseUrl(url) {}
+TinyFetch::TinyFetch() : _baseUrl(getBaseUrl()) {}
+
+TinyFetch::TinyFetch(const String& baseUrl) : _baseUrl(baseUrl) {
+    persistBaseUrl();
+}
+
+void TinyFetch::setBaseUrl(const String &baseUrl) {
+    _baseUrl = baseUrl;
+    persistBaseUrl();
+}
 
 HttpResponse TinyFetch::makeRequest(const String& path, std::function<int(HTTPClient&)> sendRequest) {
+    if (_baseUrl.isEmpty()) {
+        Serial.println("[TinyFetch] No base url set");
+        HttpResponse errorResponse;
+        errorResponse.statusCode = -1;
+        errorResponse.payload = "No base URL set.";
+        return errorResponse;
+    }
+
     HTTPClient http;
     HttpResponse response;
 
@@ -19,6 +37,20 @@ HttpResponse TinyFetch::makeRequest(const String& path, std::function<int(HTTPCl
 
     http.end();
     return response;
+}
+
+void TinyFetch::persistBaseUrl() {
+    MicroStorage::set("TinyFetch",
+        StringEntry("baseUrl", _baseUrl)
+    );   
+}
+
+String TinyFetch::getBaseUrl() {
+    auto [value] = MicroStorage::get("TinyFetch",
+        StringEntry("baseUrl", "")
+    );
+
+    return value;
 }
 
 HttpResponse TinyFetch::get(const String& path) {
