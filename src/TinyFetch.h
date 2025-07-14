@@ -20,14 +20,24 @@ struct HttpResponse {
  */
 class TinyFetch {
 public:
+    /**
+     * @brief Default constructor for TinyFetch.
+     * Initializes TinyFetch and attempts to read the base URL from persistent storage.
+     */
     TinyFetch();
 
     /**
      * @brief Constructs a TinyFetch client with the specified base URL.
+     * The provided base URL will be persisted for future use.
      * @param url The base URL to which all requests will be made.
      */
     TinyFetch(const String& baseUrl);
 
+    /**
+     * @brief Sets the base URL for all subsequent HTTP requests.
+     * The provided base URL will be persisted for future use.
+     * @param baseUrl The base URL to which all requests will be made.
+     */
     void setBaseUrl(const String& baseUrl);
 
     /**
