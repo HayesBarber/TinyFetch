@@ -26,6 +26,8 @@ public:
      */
     TinyFetch(const String& baseUrl);
 
+    void setBaseUrl(const String& baseUrl);
+
     /**
      * @brief Performs an HTTP GET request.
      * @param path The path to append to the base URL.
