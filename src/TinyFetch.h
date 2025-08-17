@@ -37,6 +37,13 @@ public:
   TinyFetch(const String &baseUrl);
 
   /**
+   * Initializes the base URL.
+   * If the base URL is not set, it loads it from storage.
+   * If the base URL is already set, it persists the current base URL.
+   */
+  void init();
+
+  /**
    * @brief Sets the base URL for all subsequent HTTP requests.
    * The provided base URL will be persisted for future use.
    * @param baseUrl The base URL to which all requests will be made.

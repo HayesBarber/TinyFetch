@@ -1,10 +1,16 @@
 #include "TinyFetch.h"
 #include <MicroStorage.h>
 
-TinyFetch::TinyFetch() : _baseUrl(getBaseUrl()) {}
+TinyFetch::TinyFetch() : _baseUrl("") {}
 
-TinyFetch::TinyFetch(const String &baseUrl) : _baseUrl(baseUrl) {
-  persistBaseUrl();
+TinyFetch::TinyFetch(const String &baseUrl) : _baseUrl(baseUrl) {}
+
+void TinyFetch::init() {
+  if (_baseUrl.isEmpty()) {
+    _baseUrl = getBaseUrl();
+  } else {
+    persistBaseUrl();
+  }
 }
 
 void TinyFetch::setBaseUrl(const String &baseUrl) {
