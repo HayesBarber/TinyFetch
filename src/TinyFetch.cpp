@@ -3,78 +3,75 @@
 
 TinyFetch::TinyFetch() : _baseUrl(getBaseUrl()) {}
 
-TinyFetch::TinyFetch(const String& baseUrl) : _baseUrl(baseUrl) {
-    persistBaseUrl();
+TinyFetch::TinyFetch(const String &baseUrl) : _baseUrl(baseUrl) {
+  persistBaseUrl();
 }
 
 void TinyFetch::setBaseUrl(const String &baseUrl) {
-    _baseUrl = baseUrl;
-    persistBaseUrl();
+  _baseUrl = baseUrl;
+  persistBaseUrl();
 }
 
-HttpResponse TinyFetch::makeRequest(const String& path, std::function<int(HTTPClient&)> sendRequest) {
-    if (_baseUrl.isEmpty()) {
-        Serial.println("[TinyFetch] No base url set");
-        HttpResponse errorResponse;
-        errorResponse.statusCode = -1;
-        errorResponse.payload = "No base URL set.";
-        return errorResponse;
-    }
+HttpResponse
+TinyFetch::makeRequest(const String &path,
+                       std::function<int(HTTPClient &)> sendRequest) {
+  if (_baseUrl.isEmpty()) {
+    Serial.println("[TinyFetch] No base url set");
+    HttpResponse errorResponse;
+    errorResponse.statusCode = -1;
+    errorResponse.payload = "No base URL set.";
+    return errorResponse;
+  }
 
-    HTTPClient http;
-    HttpResponse response;
+  HTTPClient http;
+  HttpResponse response;
 
-    String fullUrl = _baseUrl + path;
-    http.begin(fullUrl);
-    int status = sendRequest(http);
-    response.statusCode = status;
+  String fullUrl = _baseUrl + path;
+  http.begin(fullUrl);
+  int status = sendRequest(http);
+  response.statusCode = status;
 
-    if (status > 0) {
-        response.payload = http.getString();
-    } else {
-        response.payload = http.errorToString(status);
-    }
+  if (status > 0) {
+    response.payload = http.getString();
+  } else {
+    response.payload = http.errorToString(status);
+  }
 
-    http.end();
-    return response;
+  http.end();
+  return response;
 }
 
 void TinyFetch::persistBaseUrl() {
-    MicroStorage::set("TinyFetch",
-        StringEntry("baseUrl", _baseUrl)
-    );   
+  MicroStorage::set("TinyFetch", StringEntry("baseUrl", _baseUrl));
 }
 
 String TinyFetch::getBaseUrl() {
-    auto [value] = MicroStorage::get("TinyFetch",
-        StringEntry("baseUrl", "")
-    );
+  auto [value] = MicroStorage::get("TinyFetch", StringEntry("baseUrl", ""));
 
-    return value;
+  return value;
 }
 
-HttpResponse TinyFetch::get(const String& path) {
-    return makeRequest(path, [](HTTPClient& http) {
-        return http.GET();
-    });
+HttpResponse TinyFetch::get(const String &path) {
+  return makeRequest(path, [](HTTPClient &http) { return http.GET(); });
 }
 
-HttpResponse TinyFetch::post(const String& path, const String& body, const String& contentType) {
-    return makeRequest(path, [&](HTTPClient& http) {
-        http.addHeader("Content-Type", contentType);
-        return http.POST(body);
-    });
+HttpResponse TinyFetch::post(const String &path, const String &body,
+                             const String &contentType) {
+  return makeRequest(path, [&](HTTPClient &http) {
+    http.addHeader("Content-Type", contentType);
+    return http.POST(body);
+  });
 }
 
-HttpResponse TinyFetch::put(const String& path, const String& body, const String& contentType) {
-    return makeRequest(path, [&](HTTPClient& http) {
-        http.addHeader("Content-Type", contentType);
-        return http.PUT(body);
-    });
+HttpResponse TinyFetch::put(const String &path, const String &body,
+                            const String &contentType) {
+  return makeRequest(path, [&](HTTPClient &http) {
+    http.addHeader("Content-Type", contentType);
+    return http.PUT(body);
+  });
 }
 
-HttpResponse TinyFetch::del(const String& path) {
-    return makeRequest(path, [](HTTPClient& http) {
-        return http.sendRequest("DELETE");
-    });
+HttpResponse TinyFetch::del(const String &path) {
+  return makeRequest(
+      path, [](HTTPClient &http) { return http.sendRequest("DELETE"); });
 }
