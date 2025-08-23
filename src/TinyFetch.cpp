@@ -32,7 +32,8 @@ TinyFetch::makeRequest(const String &path,
   HTTPClient http;
   HttpResponse response;
 
-  String fullUrl = _baseUrl + path;
+  String encodedPath = encodePath(path);
+  String fullUrl = _baseUrl + encodedPath;
   http.begin(fullUrl);
   int status = sendRequest(http);
   response.statusCode = status;
@@ -49,6 +50,18 @@ TinyFetch::makeRequest(const String &path,
 
 void TinyFetch::persistBaseUrl() {
   MicroStorage::set("TinyFetch", StringEntry("baseUrl", _baseUrl));
+}
+
+String TinyFetch::encodePath(const String &path) {
+  String encodedPath = path;
+  int index = 0;
+  while ((index = encodedPath.indexOf(' ', index)) >= 0) {
+    encodedPath.remove(index, 1);
+    encodedPath =
+        encodedPath.substring(0, index) + "%20" + encodedPath.substring(index);
+    index += 3;
+  }
+  return encodedPath;
 }
 
 String TinyFetch::getBaseUrl() {
