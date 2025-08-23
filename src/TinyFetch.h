@@ -98,6 +98,7 @@ private:
   HttpResponse makeRequest(const String &path,
                            std::function<int(HTTPClient &)> sendRequest);
   void persistBaseUrl();
+  String encodePath(const String &path);
 };
 
 #endif
